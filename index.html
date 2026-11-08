@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kitchen List</title>
+<style>
+:root{color-scheme:light;--ink:#25271e;--paper:#faf7ed;--green:#dfe8b7;--line:#dcd7c7}*{box-sizing:border-box}body{margin:0;background:#eae5d8;color:var(--ink);font:16px system-ui,sans-serif}button,input{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible{outline:3px solid #65832a;outline-offset:3px}button:disabled{opacity:.55}main{max-width:590px;min-height:100svh;margin:auto;background:var(--paper) center/cover fixed;position:relative;padding:22px clamp(18px,5vw,34px) 40px}header,footer{display:flex;align-items:center;justify-content:space-between;gap:8px}header{border-bottom:1px solid var(--line);padding-bottom:16px}header,footer,.sheet,.intro{background:var(--paper)}.brand,.eyebrow{font-size:.73rem;letter-spacing:.15em;text-transform:uppercase;font-weight:800}.eyebrow{color:#535d35}.intro{margin:30px 0 22px;padding:14px 16px;border-radius:16px;position:relative}h1{font:normal clamp(2.7rem,11vw,4.6rem)/.95 "Myriad Pro", "Segoe UI", Arial, sans-serif;letter-spacing:-.065em;margin:8px 0 14px;overflow-wrap:anywhere}p{margin:8px 0;color:#4f5245}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{min-height:148px;border:1px solid #393b2d;border-radius:16px;text-align:left;padding:13px;display:flex;flex-direction:column;justify-content:space-between;overflow-wrap:anywhere}.tile strong{font:normal clamp(1.26rem,5vw,1.85rem) "Myriad Pro", "Segoe UI", Arial, sans-serif}.tile:nth-child(4n+1){background:#dfe8b7}.tile:nth-child(4n+2){background:#f2d6c4}.tile:nth-child(4n+3){background:#f1e5a8}.tile:nth-child(4n){background:#ddd9eb}.tile span{font-size:.78rem}.pill,.primary{border:1px solid var(--ink);border-radius:999px;padding:9px 14px;background:var(--paper)}.primary{background:var(--ink);color:white}.sheet{border-radius:16px;padding:16px;margin-top:15px;border:1px solid var(--line)}form{margin:0}.add{display:flex;gap:8px}.add input{min-width:0;flex:1}input:not([type=checkbox]){padding:10px;border:1px solid #aaa694;border-radius:8px;background:#fffdf8;width:100%}input[type=checkbox]{width:20px;height:20px;accent-color:#4a602a;flex:none}.row{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:10px 0}.row label{display:flex;align-items:center;gap:8px;flex:1;overflow-wrap:anywhere;min-width:0}.done span{text-decoration:line-through}.remove{background:none;border:0;font-size:1.4rem;min-width:40px;min-height:42px}footer{padding:12px;margin-top:22px;border-radius:12px;font-size:.8rem}.field{display:grid;gap:6px;margin:12px 0}.asset{margin:16px 0}.asset img{display:block;max-height:75px;max-width:100%;margin:8px 0}.sticker{width:65px;height:65px;object-fit:contain;position:absolute;right:12px;top:8px;pointer-events:none}.sticker+div{padding-right:65px}.status{min-height:1.4em;margin-top:12px;color:#8a3924}button, a{-webkit-tap-highlight-color:transparent}
+
+html[data-theme="dark"]{color-scheme:dark;--ink:#f8efdf;--paper:#241c23;--line:#68515e}
+html[data-theme="dark"] body{background:#1a1319}
+html[data-theme="dark"] p,html[data-theme="dark"] .eyebrow{color:#e4c6d4}
+html[data-theme="dark"] .tile{color:#25271e}
+html[data-theme="dark"] input:not([type=checkbox]){background:#352833;color:#fff}
+html[data-theme="dark"] .primary{color:#241c23}
+.theme-toggle{border:1px solid currentColor;border-radius:999px;padding:8px 13px;background:var(--paper);min-height:42px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.landing-theme{position:absolute;right:max(16px,env(safe-area-inset-right));top:16px;z-index:3}
+main.landing{max-width:none;min-height:100svh;display:grid;place-items:center;padding:68px 12px 32px;overflow:hidden;isolation:isolate;background-color:var(--paper);background-image:repeating-conic-gradient(#906a7c12 0% 25%,transparent 0% 50%),repeating-conic-gradient(#906a7c0d 0% 25%,transparent 0% 50%);background-size:3px 3px,11px 11px}
+.landing-frame{width:min(100%,660px);display:grid;justify-items:center;gap:clamp(12px,2svh,20px);position:relative}
+.landing-frame::before,.landing-frame::after{content:"";position:absolute;pointer-events:none;z-index:-1;width:clamp(235px,68vw,495px);height:clamp(320px,84svh,630px);background:url(pixel-flowers.svg) center/contain no-repeat;image-rendering:pixelated}
+.landing-frame::before{right:57%;top:9%;transform:rotate(-12deg);opacity:.30}
+.landing-frame::after{left:58%;top:15%;transform:scaleX(-1) rotate(-18deg);opacity:.20}
+ .landing-title{width:min(98%,530px);margin:0 0 clamp(-44px,-8vw,-26px);z-index:1;pointer-events:none;animation:title-in 1.75s ease-out .38s both}
+.landing-title svg{display:block;width:100%;overflow:visible}
+.wordmark-letters{fill:var(--ink);stroke:var(--paper);stroke-width:70;stroke-linejoin:round;paint-order:stroke fill}
+@keyframes title-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.landing-art{width:min(78%,390px);aspect-ratio:9/16;display:block;border-radius:13px;transform-origin:48% 74%;animation:arrive 1050ms cubic-bezier(.17,.79,.23,1) both;box-shadow:5px 8px 0 #ce5b8d37}
+.landing-art img{width:100%;height:100%;display:block;border-radius:inherit;object-fit:contain;background:#151116}
+.club-line{width:min(92%,388px);height:auto;display:block;margin-top:1px;overflow:visible;fill:var(--ink);font:600 20px 'Myriad Pro', 'Myriad Web Pro', 'Segoe UI', Arial,sans-serif;letter-spacing:2.2px}
+.enter-list{padding:12px 23px;min-height:46px}
+@keyframes arrive{0%{opacity:0;transform:translate(-26px,44px) rotate(-12deg) scale(.68);clip-path:inset(52% 0 0)}56%{opacity:1;clip-path:inset(0);transform:translate(5px,-7px) rotate(3deg) scale(1.035)}80%{transform:translate(-2px,2px) rotate(-1deg) scale(.99)}100%{opacity:1;transform:none;clip-path:inset(0)}}
+@media(max-width:480px){main.landing{padding:62px 8px 24px}}
+@media(prefers-reduced-motion:reduce){.landing-art,.landing-title{animation:none}}
+
+main.floral-list {
+  isolation:isolate;
+  overflow:hidden;
+  background-image:var(--list-art,none),repeating-conic-gradient(#906a7c12 0% 25%,transparent 0% 50%),repeating-conic-gradient(#906a7c0d 0% 25%,transparent 0% 50%);
+  background-size:cover,3px 3px,11px 11px;
+  background-position:center;
+  background-repeat:no-repeat,repeat,repeat;
+  background-attachment:scroll;
+}
+.floral-list::before,.floral-list::after {
+  content:"";position:absolute;pointer-events:none;z-index:-1;
+  width:clamp(235px,68vw,495px);height:clamp(320px,84svh,630px);
+  background:url(pixel-flowers.svg) center/contain no-repeat;
+  image-rendering:pixelated;
+}
+.floral-list::before {right:57%;top:100px;transform:rotate(-12deg);opacity:.30}
+.floral-list::after {left:58%;top:270px;transform:scaleX(-1) rotate(-18deg);opacity:.20}
+.floral-list .intro,.floral-list .sheet,.floral-list header,.floral-list footer {
+  background:color-mix(in srgb,var(--paper) 94%,transparent);
+}
+.floral-list .grid {grid-auto-rows:1fr}
+.tile {position:relative;isolation:isolate;min-height:0;aspect-ratio:1;border:0;gap:6px;justify-content:flex-end;overflow:hidden;padding:clamp(9px,3vw,16px)}
+.tile strong {display:block;font-size:clamp(1rem,4.85vw,1.65rem);font-weight:700;line-height:1.04}
+.tile span:last-child {margin-top:0}
+html[data-theme="dark"] .tile.has-cover,.tile.has-cover {color:#fff;background:#181019}
+.tile.has-cover::after {
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(to bottom,transparent 36%,rgba(15,10,16,.86));
+  pointer-events:none;
+}
+.tile-cover {position:absolute;inset:0;z-index:-2}
+.tile-cover img,.store-cover img {display:block;width:100%;height:100%;object-fit:cover}
+.store-cover {width:min(100%,335px);aspect-ratio:4/3;overflow:hidden;border-radius:12px;margin:18px auto 0;background:var(--paper)}
+.store-cover.misc-cover {aspect-ratio:332/310}
+.store-cover.misc-cover img {transform:scale(1.18)}
+.store-cover + .intro {margin-top:12px}
+</style>
+<body>
+<main id="app"><header><span class="brand">Kitchen List</span></header><p>Opening your list…</p></main>
+<script>
+'use strict';
+// Set only the public Supabase project URL and publishable key for shared mode.
+const config = { url: '', key: '' };
+const shared = Boolean(config.url && config.key);
+const defaults = {
+  stores: ['Independent','Food Basics','Dollarama','Miscellaneous'].map((name,i)=>({id:String(i+1),name})),
+  artwork: {}
+};
+const app = document.querySelector('#app');
+let design = structuredClone(defaults), items = [], db, role = shared ? '' : 'owner';
+let draft, busy = false, message = '';
+
+function load(key, fallback) {
+  try { return JSON.parse(localStorage.getItem('kitchen.'+key)) ?? fallback; }
+  catch { return fallback; }
+}
+function save(key, value) { localStorage.setItem('kitchen.'+key, JSON.stringify(value)); }
+let theme = load('theme',matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+document.documentElement.dataset.theme=theme;
+function themeButton(extra='') {
+  const label = () => theme==='dark' ? '☀' : '☾';
+  const toggle = button(label(),()=>{
+    theme=theme==='dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme=theme;
+    toggle.textContent=label();
+    try { save('theme',theme); } catch {}
+  },'theme-toggle '+extra);
+  return toggle;
+}
+function el(tag, value, cls) {
+  const node = document.createElement(tag);
+  if (value) node.textContent = value;
+  if (cls) node.className = cls;
+  return node;
+}
+function button(label, action, cls='pill') {
+  const node = el('button',label,cls);
+  node.type = 'button';
+  node.onclick = action;
+  return node;
+}
+function route(path) { location.hash = path; }
+function current() { return location.hash.slice(1); }
+function result(response) {
+  if (response.error) throw new Error(response.error.message);
+  return response.data;
+}
+async function refresh() {
+  if (!shared) {
+    design = load('design',structuredClone(defaults));
+    items = load('items',[]);
+    return;
+  }
+  const {session} = result(await db.auth.getSession());
+  role = '';
+  if (!session) return;
+  const membership = result(await db.from('kitchen_members').select('role').eq('user_id',session.user.id).maybeSingle());
+  role = membership?.role || 'guest';
+  if (role === 'guest') return;
+  const [settings, rows] = await Promise.all([
+    db.from('kitchen_design').select('value').eq('id',1).single(),
+    db.from('kitchen_items').select('*').order('created_at')
+  ]);
+  design = result(settings).value;
+  items = result(rows);
+}
+function status() {
+  const line = el('p',message,'status');
+  line.id = 'status';
+  line.setAttribute('role','status');
+  app.append(line);
+}
+async function action(fn) {
+  if (busy) return;
+  busy = true;
+  message = '';
+  const mainForm = document.activeElement?.closest('form');
+  const controls = mainForm ? [...mainForm.querySelectorAll('button,input')].filter(x=>!x.disabled) : [];
+  controls.forEach(x=>x.disabled=true);
+  try { await fn(); render(); }
+  catch (error) {
+    message = error.message || 'Something went wrong. Try again.';
+    const line = document.querySelector('#status');
+    if (line) line.textContent = message;
+    else render();
+  } finally {
+    controls.forEach(x=>x.disabled=false);
+    busy = false;
+  }
+}
+function safeImage(source) {
+  return typeof source==='string' && /^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(source) ? source : '';
+}
+function image(source, cls) {
+  const node = el('img','',cls);
+  node.src = safeImage(source);
+  node.alt = '';
+  return node;
+}
+function landing() {
+  const frame = el('section','','landing-frame');
+  const art = el('picture','','landing-art');
+  const custom = safeImage(design.artwork.opening);
+  if (!custom) {
+    const still = el('source');
+    still.media = '(prefers-reduced-motion: reduce)';
+    still.srcset = 'intro-still.jpg';
+    art.append(still);
+  }
+  const visual = el('img');
+  visual.src = custom || 'intro.gif';
+  visual.alt = 'A collage of an elephant and a red bottle against a textured backdrop';
+  art.append(visual);
+  const title = el('h1','','landing-title');
+  title.setAttribute('aria-label','What’s Cooking!!');
+  title.innerHTML = `<svg viewBox="0 0 480 108" aria-hidden="true">
+  <defs><clipPath id="wordmark-cutouts"><path transform="translate(187.68 68.58) rotate(-3.46) translate(-12.23 0) scale(0.030685 -0.030685)" d="M747 298Q747 141 650.5 60.5Q554 -20 370 -20Q294 -20 202.5 -3.5Q111 13 64 31V287H130L168 155Q203 120 260.0 96.5Q317 73 376 73Q463 73 505.5 110.5Q548 148 548 206Q548 261 507.0 294.0Q466 327 328 370Q183 415 122.5 493.0Q62 571 62 685Q62 813 157.0 889.0Q252 965 402 965Q505 965 679 936V695H613L581 805Q552 834 499.5 852.5Q447 871 400 871Q328 871 293.5 841.5Q259 812 259 761Q259 708 302.0 674.0Q345 640 479 600Q625 555 686.0 481.5Q747 408 747 298Z"/><path transform="translate(305.02 69.44) rotate(6.29) translate(-15.71 0) scale(0.030685 -0.030685)" d="M946 475Q946 222 837.5 101.0Q729 -20 506 -20Q290 -20 184.0 102.5Q78 225 78 475Q78 724 185.5 844.5Q293 965 514 965Q737 965 841.5 840.5Q946 716 946 475ZM653 475Q653 695 620.5 779.5Q588 864 508 864Q431 864 401.0 783.0Q371 702 371 475Q371 244 401.5 162.0Q432 80 508 80Q587 80 620.0 166.5Q653 253 653 475Z"/><path transform="translate(385.21 79.17) rotate(9.51) translate(-17.48 0) scale(0.030685 -0.031913)" d="M764 725Q764 822 673 822Q610 822 531.0 752.0Q452 682 414 594L308 0H42L190 849L101 874L114 940H448L440 765Q595 965 820 965Q919 965 977.0 912.0Q1035 859 1035 763Q1035 711 1010 580L923 90L1039 66L1026 0H640L742 569Q764 685 764 725Z"/></clipPath></defs>
+  <g class="wordmark-letters"><path transform="translate(45.62 88.80) rotate(-12.65) translate(-33.62 0) scale(0.032833 -0.034981)" d="M1501 -31H1378L1044 796L713 -31H590L146 1242L29 1268V1341H631V1268L474 1242L760 443L1074 1227H1199L1514 445L1751 1242L1582 1268V1341H2016V1268L1899 1242Z"/><path transform="translate(95.15 79.11) rotate(-9.49) translate(-17.48 0) scale(0.030685 -0.030685)" d="M436 1014Q436 948 430 858L499 893Q641 965 754 965Q1014 965 1014 688V90L1108 66V0H641V66L725 90V649Q725 733 689.5 780.0Q654 827 588 827Q512 827 436 793V90L522 66V0H55V66L147 90V1331L51 1355V1421H436Z"/><path transform="translate(126.76 76.40) rotate(-7.45) translate(-15.71 0) scale(0.030685 -0.030685)" d="M546 961Q899 961 899 701V90L993 66V0H647L625 72Q547 19 484.0 -0.5Q421 -20 357 -20Q66 -20 66 260Q66 366 109.0 429.5Q152 493 233.0 523.5Q314 554 488 558L610 561V698Q610 868 471 868Q387 868 283 816L245 699H179V926Q330 949 401.0 955.0Q472 961 546 961ZM610 472 526 469Q429 465 391.5 418.0Q354 371 354 266Q354 181 384.0 141.0Q414 101 462 101Q530 101 610 136Z"/><path transform="translate(149.28 71.75) rotate(-5.98) translate(-8.38 0) scale(0.029458 -0.031913)" d="M428 106Q462 106 538 132L564 62Q515 27 439.5 3.5Q364 -20 296 -20Q186 -20 126.5 32.5Q67 85 67 185Q67 231 85 329L177 836H62L73 901L215 940L354 1153H500L462 940H620L602 836H444L353 327Q337 245 337 207Q337 154 363.5 130.0Q390 106 428 106Z"/><path transform="translate(166.55 70.11) rotate(-2.85) translate(-10.46 0) scale(0.030685 -0.030685)" d="M535 1167Q535 1010 431.0 903.0Q327 796 127 743V836Q190 855 235.5 886.0Q281 917 305.5 955.0Q330 993 330 1026Q330 1050 311.0 1068.0Q292 1086 254 1105Q178 1143 178 1229Q178 1290 221.5 1326.0Q265 1362 338 1362Q422 1362 478.5 1308.0Q535 1254 535 1167Z"/><path transform="translate(187.68 68.58) rotate(-3.46) translate(-12.23 0) scale(0.030685 -0.030685)" d="M747 298Q747 141 650.5 60.5Q554 -20 370 -20Q294 -20 202.5 -3.5Q111 13 64 31V287H130L168 155Q203 120 260.0 96.5Q317 73 376 73Q463 73 505.5 110.5Q548 148 548 206Q548 261 507.0 294.0Q466 327 328 370Q183 415 122.5 493.0Q62 571 62 685Q62 813 157.0 889.0Q252 965 402 965Q505 965 679 936V695H613L581 805Q552 834 499.5 852.5Q447 871 400 871Q328 871 293.5 841.5Q259 812 259 761Q259 708 302.0 674.0Q345 640 479 600Q625 555 686.0 481.5Q747 408 747 298Z"/><path transform="translate(236.75 67.01) rotate(-0.21) translate(-24.28 0) scale(0.032833 -0.034981)" d="M815 -20Q478 -20 289.0 159.0Q100 338 100 655Q100 999 280.5 1177.5Q461 1356 814 1356Q1047 1356 1297 1289L1303 967H1213L1185 1161Q1053 1251 878 1251Q646 1251 539.0 1106.5Q432 962 432 658Q432 377 544.0 230.0Q656 83 870 83Q983 83 1067.5 113.0Q1152 143 1200 184L1232 404H1323L1317 64Q1227 29 1083.0 4.5Q939 -20 815 -20Z"/><path transform="translate(275.17 69.71) rotate(2.32) translate(-15.71 0) scale(0.030685 -0.031913)" d="M683 625Q683 866 558 866Q495 866 433.5 790.0Q372 714 334.5 586.0Q297 458 297 319Q297 204 334.0 141.5Q371 79 429 79Q493 79 553.0 153.0Q613 227 648.0 353.0Q683 479 683 625ZM406 -20Q236 -20 134.0 87.0Q32 194 32 374Q32 536 102.0 672.0Q172 808 297.5 886.5Q423 965 580 965Q750 965 852.0 858.0Q954 751 954 571Q954 409 884.0 273.0Q814 137 688.5 58.5Q563 -20 406 -20Z"/><path transform="translate(305.02 69.44) rotate(6.29) translate(-15.71 0) scale(0.030685 -0.030685)" d="M946 475Q946 222 837.5 101.0Q729 -20 506 -20Q290 -20 184.0 102.5Q78 225 78 475Q78 724 185.5 844.5Q293 965 514 965Q737 965 841.5 840.5Q946 716 946 475ZM653 475Q653 695 620.5 779.5Q588 864 508 864Q431 864 401.0 783.0Q371 702 371 475Q371 244 401.5 162.0Q432 80 508 80Q587 80 620.0 166.5Q653 253 653 475Z"/><path transform="translate(336.64 72.39) rotate(6.36) translate(-17.48 0) scale(0.030685 -0.030685)" d="M436 451 803 851 703 874V940H1061V874L953 852L729 616L1052 90L1136 66V0H684V66L739 90L551 419L436 339V90L529 66V0H58V66L147 90V1331L51 1355V1421H436Z"/><path transform="translate(360.92 77.44) rotate(7.95) translate(-8.38 0) scale(0.029458 -0.030685)" d="M436 90 539 66V0H45V66L147 90V850L51 874V940H436ZM137 1268Q137 1333 182.5 1377.0Q228 1421 291 1421Q355 1421 399.5 1376.5Q444 1332 444 1268Q444 1205 400.0 1159.5Q356 1114 291 1114Q227 1114 182.0 1158.5Q137 1203 137 1268Z"/><path transform="translate(385.21 79.17) rotate(9.51) translate(-17.48 0) scale(0.030685 -0.031913)" d="M764 725Q764 822 673 822Q610 822 531.0 752.0Q452 682 414 594L308 0H42L190 849L101 874L114 940H448L440 765Q595 965 820 965Q919 965 977.0 912.0Q1035 859 1035 763Q1035 711 1010 580L923 90L1039 66L1026 0H640L742 569Q764 685 764 725Z"/><path transform="translate(416.82 85.04) rotate(11.53) translate(-15.71 0) scale(0.030685 -0.031913)" d="M292 355Q292 249 324.5 189.0Q357 129 407 129Q442 129 489.5 164.0Q537 199 582 259L689 841Q630 866 560 866Q486 866 425.0 797.0Q364 728 328.0 606.0Q292 484 292 355ZM29 311Q29 490 97.0 643.0Q165 796 284.5 880.5Q404 965 555 965Q718 965 970 923L798 -35Q760 -242 637.0 -339.0Q514 -436 294 -436Q201 -436 108.5 -416.0Q16 -396 -38 -365L-16 -112H40L76 -243Q112 -280 169.0 -303.5Q226 -327 295 -327Q362 -327 407.0 -302.0Q452 -277 479.5 -227.5Q507 -178 525 -75Q549 72 572 145Q511 66 435.5 21.5Q360 -23 288 -23Q171 -23 100.0 67.0Q29 157 29 311Z"/><path transform="translate(441.01 90.32) rotate(13.06) translate(-10.05 0) scale(0.029458 -0.030685)" d="M397 420H282L190 1341H489ZM340 -29Q271 -29 222.5 19.0Q174 67 174 137Q174 206 222.0 254.5Q270 303 340 303Q409 303 457.5 255.0Q506 207 506 137Q506 68 458.0 19.5Q410 -29 340 -29Z"/><path transform="translate(459.53 94.81) rotate(14.22) translate(-10.05 0) scale(0.029458 -0.030685)" d="M397 420H282L190 1341H489ZM340 -29Q271 -29 222.5 19.0Q174 67 174 137Q174 206 222.0 254.5Q270 303 340 303Q409 303 457.5 255.0Q506 207 506 137Q506 68 458.0 19.5Q410 -29 340 -29Z"/></g>
+  <image href="intro-still.jpg" x="159" y="-131" width="322" height="260" preserveAspectRatio="xMidYMid slice" clip-path="url(#wordmark-cutouts)" opacity=".68"/>
+</svg>`;
+  const club = el('div');
+  club.innerHTML = `<svg class="club-line" viewBox="0 0 300 43" role="img" aria-label="The Kitchen Club">
+    <defs><path id="accent-arc" d="M12 15 Q150 46 288 15"/></defs>
+    <text text-anchor="middle"><textPath href="#accent-arc" startOffset="50%">✦　THE KITCHEN CLUB　✦</textPath></text>
+  </svg>`;
+  frame.append(title,art,club.firstElementChild,button('open list',()=>route('list'),'primary enter-list'));
+  app.append(themeButton('landing-theme'),frame);
+}
+function intro(label, title, copy) {
+  const box = el('div','','intro'), text = el('div');
+  if (safeImage(design.artwork.sticker)) box.append(image(design.artwork.sticker,'sticker'));
+  text.append(el('div',label,'eyebrow'),el('h1',title),el('p',copy));
+  box.append(text);
+  app.append(box);
+}
+const storeCovers = new Map([
+  ['independent','cover-independent.webp'],
+  ['foodbasics','cover-food-basics.webp'],
+  ['dollarama','cover-dollarama.webp'],
+  ['miscellaneous','cover-miscellaneous.webp'],
+  ['misc','cover-miscellaneous.webp']
+]);
+function coverFor(store, className) {
+  const src = storeCovers.get(store.name.toLowerCase().replace(/\s/g,''));
+  if (!src) return null;
+  const frame = el('div','',className), artwork = el('img');
+  if (className==='store-cover' && src==='cover-miscellaneous.webp') frame.classList.add('misc-cover');
+  artwork.src=src;
+  artwork.alt='';
+  artwork.width=1000;
+  artwork.height=750;
+  frame.append(artwork);
+  return frame;
+}
+function menu() {
+  intro('GIRL DINNER LIST','Where to?','Pick a store to add or check off an item.');
+  const grid = el('div','','grid');
+  design.stores.forEach(store=>{
+    const count = items.filter(item=>item.store_id===store.id&&!item.done).length;
+    const tile = button('',()=>route('store/'+store.id),'tile');
+    const cover = coverFor(store,'tile-cover');
+    if (cover) {
+      tile.classList.add('has-cover');
+      tile.append(cover);
+    }
+    tile.append(el('strong',store.name),el('span',count+' to pick up'));
+    grid.append(tile);
+  });
+  app.append(grid);
+}
+async function changeItem(kind,item) {
+  if (shared) {
+    const table = db.from('kitchen_items');
+    if (kind==='add') result(await table.insert(item).select('id').single());
+    if (kind==='toggle') result(await table.update({done:item.done}).eq('id',item.id).select('id').single());
+    if (kind==='remove') result(await table.delete().eq('id',item.id).select('id').single());
+  } else {
+    let next = load('items',[]);
+    if (kind==='add') next.push({...item,id:crypto.randomUUID()});
+    if (kind==='toggle') next = next.map(row=>row.id===item.id ? {...row,done:item.done} : row);
+    if (kind==='remove') next = next.filter(row=>row.id!==item.id);
+    save('items',next);
+  }
+  await refresh();
+}
+function storePage(store) {
+  const cover = coverFor(store,'store-cover');
+  if (cover) app.append(cover);
+  intro('STORE LIST',store.name,'Add it while it’s on your mind.');
+  const box = el('section','','sheet'), form = el('form','','add'), field = el('input');
+  field.placeholder='Add an item'; field.required=true; field.maxLength=160; field.setAttribute('aria-label','Add an item');
+  const add = el('button','Add','primary');
+  form.append(field,add);
+  form.onsubmit = event=>{
+    event.preventDefault();
+    const name = field.value.trim();
+    if (name) action(()=>changeItem('add',{name,store_id:store.id,done:false})).then(()=>{
+      if (!message) document.querySelector('.add input')?.focus();
+    });
+  };
+  box.append(form);
+  const rows = items.filter(item=>item.store_id===store.id).sort((a,b)=>Number(a.done)-Number(b.done));
+  if (!rows.length) box.append(el('p','Your list is empty.'));
+  rows.forEach(item=>{
+    const row = el('div','','row'), label = el('label','',item.done?'done':''), checkbox = el('input');
+    checkbox.type='checkbox'; checkbox.checked=item.done;
+    checkbox.onchange = ()=>{
+      const done=checkbox.checked;
+      checkbox.checked=item.done;
+      action(()=>changeItem('toggle',{...item,done}));
+    };
+    label.append(checkbox,el('span',item.name));
+    const remove = button('×',()=>action(()=>changeItem('remove',item)),'remove');
+    remove.setAttribute('aria-label','Remove '+item.name);
+    row.append(label,remove); box.append(row);
+  });
+  app.append(box);
+}
+function field(label,type,value) {
+  const wrapper = el('label','','field'), input = el('input');
+  input.type=type; if(value) input.value=value;
+  wrapper.append(el('span',label),input);
+  return [wrapper,input];
+}
+async function artwork(file) {
+  if (!['image/png','image/jpeg','image/webp'].includes(file.type)) throw new Error('Choose a PNG, JPG, or WebP image.');
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1,1000/Math.max(bitmap.width,bitmap.height));
+  const canvas = document.createElement('canvas');
+  canvas.width=Math.max(1,Math.round(bitmap.width*scale)); canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+  canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);
+  bitmap.close();
+  const url=canvas.toDataURL('image/webp',.82);
+  if (url.length>650000) throw new Error('This artwork is too large. Try a smaller export.');
+  return url;
+}
+function settings() {
+  draft ??= structuredClone(design);
+  intro('OWNER TOOLS','Make it yours.','Upload your artwork and name your shopping lists.');
+  const form = el('form','','sheet');
+  draft.stores.forEach(store=>{
+    const [label,input]=field('Store name','text',store.name);
+    input.required=true; input.maxLength=45;
+    input.oninput=()=>store.name=input.value;
+    form.append(label);
+  });
+  if (draft.stores.length<24) form.append(button('+ Add a store',()=>{
+    draft.stores.push({id:crypto.randomUUID(),name:''});
+    render();
+    const names = document.querySelectorAll('input[type=text]');
+    names[names.length-1]?.focus();
+  }));
+  for (const [key,title] of [['opening','Opening graphic'],['background','Page background'],['sticker','Sticker']]) {
+    const box=el('div','','asset');
+    const [label,input]=field(title,'file');
+    input.accept='image/png,image/jpeg,image/webp';
+    input.onchange=()=>{const file=input.files[0];if(file) action(async()=>{draft.artwork[key]=await artwork(file);});};
+    box.append(label);
+    if(safeImage(draft.artwork[key])) box.append(image(draft.artwork[key]),button('Remove '+title.toLowerCase(),()=>{delete draft.artwork[key];render();}));
+    form.append(box);
+  }
+  form.append(el('button','Save design','primary'));
+  form.onsubmit=event=>{
+    event.preventDefault();
+    action(async()=>{
+      if(draft.stores.some(store=>!store.name.trim())) throw new Error('Give every store a name.');
+      draft.stores.forEach(store=>store.name=store.name.trim());
+      if(shared) result(await db.from('kitchen_design').update({value:draft}).eq('id',1).select('id').single());
+      else save('design',draft);
+      draft=null;
+      await refresh(); route('list');
+    });
+  };
+  app.append(form);
+}
+function login() {
+  intro('THE KITCHEN CLUB','Come on in.','Sign in to open the shared shopping lists.');
+  const form=el('form','','sheet');
+  const [emailLabel,email]=field('Email','email'), [passLabel,password]=field('Password','password');
+  email.required=password.required=true; email.autocomplete='username'; password.autocomplete='current-password';
+  form.append(emailLabel,passLabel,el('button','Sign in','primary'));
+  form.onsubmit=event=>{
+    event.preventDefault();
+    action(async()=>{result(await db.auth.signInWithPassword({email:email.value.trim(),password:password.value}));await refresh();});
+  };
+  app.append(form);
+}
+function render() {
+  const path=current();
+  if(path!=='design') draft=null;
+  app.replaceChildren();
+  app.classList.toggle('landing',!path);
+  app.classList.toggle('floral-list',path==='list'||path.startsWith('store/'));
+  if (!path) {
+    app.style.removeProperty('--list-art');
+    app.style.backgroundImage = '';
+    landing();
+    return;
+  }
+  const background=safeImage(design.artwork.background);
+  app.style.removeProperty('--list-art');
+  if (app.classList.contains('floral-list')) {
+    app.style.backgroundImage = '';
+    if (background) app.style.setProperty('--list-art','url("'+background+'")');
+  } else {
+  app.style.backgroundImage=background ? 'url("'+background+'")' : '';
+  }
+  const header=el('header');
+  header.append(path==='list' ? button('⌂',()=>route('')) : button('← Stores',()=>route('list')));
+  if (role==='owner'&&path!=='design') header.append(button('Customize',()=>route('design')));
+  header.append(themeButton());
+  app.append(header);
+  const store=design.stores.find(x=>'store/'+x.id===path);
+  if (!role) login();
+  else if(role==='guest') intro('INVITE REQUIRED','You’re signed in.','Ask the owner to give this account access.');
+  else if(path==='design'&&role==='owner') settings();
+  else if(store) storePage(store);
+  else menu();
+  status();
+  const footer=el('footer');
+  footer.append(el('span',shared ? 'Kitchen List · Shared mode' : 'Preview · Saves on this browser'));
+  if(shared && role) footer.append(button('Sign out',()=>action(async()=>{
+    result(await db.auth.signOut()); role=''; design=structuredClone(defaults); items=[]; draft=null; route('');
+  })));
+  app.append(footer);
+}
+async function start() {
+  try {
+    if(shared) {
+      const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+      db=createClient(config.url,config.key);
+    }
+    await refresh();
+    render();
+    window.addEventListener('hashchange',()=>{message='';render();});
+    window.addEventListener('storage',event=>{
+      if(!shared&&event.key?.startsWith('kitchen.')&&current()!=='design') action(refresh);
+    });
+    if(shared) {
+      const sync=()=>{
+        if(role && !busy && !document.hidden && current() && current()!=='design') {
+          const input=document.querySelector('.add input');
+          if(!input?.value&&!app.contains(document.activeElement)) action(refresh);
+        }
+      };
+      window.addEventListener('focus',sync);
+      setInterval(sync,5000);
+    }
+  } catch(error) {app.replaceChildren(el('p','Could not open Kitchen List. '+error.message));}
+}
+start();
+</script>
+</body>
+</html>
